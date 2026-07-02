@@ -1,12 +1,17 @@
+import { Outlet } from "react-router-dom";
+
 import Sidebar from "../components/layout/Sidebar";
 import Navbar from "../components/layout/Navbar";
-import { Outlet } from "react-router-dom";
 
 function DashboardLayout() {
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <Sidebar />
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block">
+        <Sidebar />
+      </div>
 
+      {/* Main Content */}
       <div className="flex flex-1 flex-col">
         <Navbar />
 

@@ -2,7 +2,10 @@ const taskService = require("../services/task.service");
 
 const createTask = async (req, res) => {
   try {
-    const task = await taskService.createTask(req.user.id, req.body);
+    const task = await taskService.createTask(
+      req.user.id,
+      req.body
+    );
 
     res.status(201).json({
       success: true,
@@ -19,7 +22,20 @@ const createTask = async (req, res) => {
 
 const getMyTasks = async (req, res) => {
   try {
-    const tasks = await taskService.getMyTasks(req.user.id);
+    const {
+      search = "",
+      status = "",
+      priority = "",
+      sort = "newest",
+    } = req.query;
+
+    const tasks = await taskService.getMyTasks(
+      req.user.id,
+      search,
+      status,
+      priority,
+      sort
+    );
 
     res.status(200).json({
       success: true,
@@ -97,7 +113,10 @@ const updateTaskStatus = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   try {
-    await taskService.deleteTask(req.params.id, req.user.id);
+    await taskService.deleteTask(
+      req.params.id,
+      req.user.id
+    );
 
     res.status(200).json({
       success: true,

@@ -6,20 +6,14 @@ import {
 } from "lucide-react";
 
 import SummaryCard from "./SummaryCard";
-import { Skeleton } from "@/components/ui/skeleton";
+import DashboardSkeleton from "./DashboardSkeleton";
 import { useDashboard } from "../hooks/useDashboard";
 
 function DashboardSummary() {
   const { data, isLoading } = useDashboard();
 
   if (isLoading) {
-    return (
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-        {[1, 2, 3, 4].map((item) => (
-          <Skeleton key={item} className="h-32 rounded-xl" />
-        ))}
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   const summary = data?.data;
