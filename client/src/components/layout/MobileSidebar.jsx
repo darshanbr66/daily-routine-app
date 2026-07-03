@@ -7,43 +7,52 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-function MobileSidebar({ navigation }) {
+import { navigation } from "./Sidebar";
+
+function MobileSidebar() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <button className="rounded-md p-2 hover:bg-slate-100">
+        <button className="rounded-md p-2 transition hover:bg-slate-100">
           <Menu className="h-6 w-6" />
         </button>
       </SheetTrigger>
 
       <SheetContent side="left" className="w-72 p-0">
+        {/* Logo */}
         <div className="border-b p-6">
           <Link
             to="/dashboard"
-            className="text-2xl font-bold text-blue-600"
+            className="text-2xl font-bold text-indigo-600"
           >
             Daily Routine
           </Link>
         </div>
 
-        <nav className="flex flex-col p-4">
-          {navigation.map((item) => (
-            <NavLink
-              key={item.name}
-              to={item.path}
-              end={item.path === "/dashboard"}
-              className={({ isActive }) =>
-                `mb-2 flex items-center gap-3 rounded-lg px-4 py-3 transition ${
-                  isActive
-                    ? "bg-blue-600 text-white"
-                    : "text-slate-700 hover:bg-slate-100"
-                }`
-              }
-            >
-              <item.icon size={20} />
-              {item.name}
-            </NavLink>
-          ))}
+        {/* Navigation */}
+        <nav className="flex flex-col gap-2 p-3">
+          {navigation.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <NavLink
+                key={item.name}
+                to={item.path}
+                end={item.path === "/dashboard"}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-200 ${
+                    isActive
+                      ? "bg-indigo-600 text-white shadow-md"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`
+                }
+              >
+                <Icon className="text-lg" />
+
+                <span>{item.name}</span>
+              </NavLink>
+            );
+          })}
         </nav>
       </SheetContent>
     </Sheet>

@@ -12,22 +12,30 @@ import { useLogout } from "@/features/auth/hooks/useLogout";
 
 import { LogOut, User } from "lucide-react";
 
+import MobileSidebar from "./MobileSidebar";
+
 function Navbar() {
   const { user } = useSelector((state) => state.auth);
 
   const logoutUser = useLogout();
 
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-white px-6 shadow-sm">
+    <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm md:px-6">
       {/* Left */}
-      <div>
-        <h1 className="text-2xl font-bold text-slate-800">
+      <div className="flex items-center gap-3">
+        {/* Mobile Menu */}
+        <div className="md:hidden">
+          <MobileSidebar />
+        </div>
+
+        <h1 className="text-xl font-bold text-slate-800 md:text-2xl">
           Daily Routine
         </h1>
       </div>
 
       {/* Right */}
       <div className="flex items-center gap-4">
+        {/* User Info */}
         <div className="hidden text-right md:block">
           <p className="font-semibold text-slate-800">
             {user?.firstName} {user?.lastName}
@@ -38,6 +46,7 @@ function Navbar() {
           </p>
         </div>
 
+        {/* Avatar */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="outline-none">
