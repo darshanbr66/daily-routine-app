@@ -14,18 +14,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-function HabitForm({
+function GoalForm({
   defaultValues = {
     title: "",
     description: "",
     category: "Personal",
-    reminderTime: "",
+    priority: "medium",
+    status: "not-started",
+    progress: 0,
+    targetDate: "",
     color: "#4F46E5",
-    icon: "⭐",
+    icon: "🎯",
   },
   onSubmit,
   isLoading = false,
-  submitText = "Create Habit",
+  submitText = "Create Goal",
 }) {
   const {
     register,
@@ -43,6 +46,8 @@ function HabitForm({
   }, [defaultValues, reset]);
 
   const category = watch("category");
+  const priority = watch("priority");
+  const status = watch("status");
 
   return (
     <form
@@ -51,13 +56,13 @@ function HabitForm({
     >
       {/* Title */}
       <div className="space-y-2">
-        <Label htmlFor="title">Habit Title</Label>
+        <Label htmlFor="title">Goal Title</Label>
 
         <Input
           id="title"
-          placeholder="Drink 3L Water"
+          placeholder="Build Daily Routine App"
           {...register("title", {
-            required: "Habit title is required",
+            required: "Goal title is required",
           })}
         />
 
@@ -77,12 +82,12 @@ function HabitForm({
         <Textarea
           id="description"
           rows={4}
-          placeholder="Describe your habit..."
+          placeholder="Describe your goal..."
           {...register("description")}
         />
       </div>
 
-      {/* Row */}
+      {/* Row 1 */}
       <div className="grid gap-5 md:grid-cols-2">
         <div className="space-y-2">
           <Label>Category</Label>
@@ -98,6 +103,10 @@ function HabitForm({
             </SelectTrigger>
 
             <SelectContent>
+              <SelectItem value="Career">
+                Career
+              </SelectItem>
+
               <SelectItem value="Health">
                 Health
               </SelectItem>
@@ -110,16 +119,20 @@ function HabitForm({
                 Learning
               </SelectItem>
 
-              <SelectItem value="Career">
-                Career
-              </SelectItem>
-
               <SelectItem value="Finance">
                 Finance
               </SelectItem>
 
               <SelectItem value="Personal">
                 Personal
+              </SelectItem>
+
+              <SelectItem value="Business">
+                Business
+              </SelectItem>
+
+              <SelectItem value="Travel">
+                Travel
               </SelectItem>
 
               <SelectItem value="Other">
@@ -130,23 +143,105 @@ function HabitForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="reminderTime">
-            Reminder Time
+          <Label>Priority</Label>
+
+          <Select
+            value={priority}
+            onValueChange={(value) =>
+              setValue("priority", value)
+            }
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectItem value="low">
+                Low
+              </SelectItem>
+
+              <SelectItem value="medium">
+                Medium
+              </SelectItem>
+
+              <SelectItem value="high">
+                High
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      {/* Row 2 */}
+      <div className="grid gap-5 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label>Status</Label>
+
+          <Select
+            value={status}
+            onValueChange={(value) =>
+              setValue("status", value)
+            }
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectItem value="not-started">
+                Not Started
+              </SelectItem>
+
+              <SelectItem value="in-progress">
+                In Progress
+              </SelectItem>
+
+              <SelectItem value="completed">
+                Completed
+              </SelectItem>
+
+              <SelectItem value="on-hold">
+                On Hold
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="progress">
+            Progress (%)
           </Label>
 
           <Input
-            id="reminderTime"
-            type="time"
-            {...register("reminderTime")}
+            id="progress"
+            type="number"
+            min={0}
+            max={100}
+            placeholder="0"
+            {...register("progress", {
+              valueAsNumber: true,
+            })}
           />
         </div>
       </div>
 
-      {/* Row */}
+      {/* Row 3 */}
       <div className="grid gap-5 md:grid-cols-2">
         <div className="space-y-2">
+          <Label htmlFor="targetDate">
+            Target Date
+          </Label>
+
+          <Input
+            id="targetDate"
+            type="date"
+            {...register("targetDate")}
+          />
+        </div>
+
+        <div className="space-y-2">
           <Label htmlFor="color">
-            Habit Color
+            Goal Color
           </Label>
 
           <Input
@@ -156,17 +251,18 @@ function HabitForm({
             {...register("color")}
           />
         </div>
+      </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="icon">Icon</Label>
+      {/* Icon */}
+      <div className="space-y-2">
+        <Label htmlFor="icon">Icon</Label>
 
-          <Input
-            id="icon"
-            maxLength={2}
-            placeholder="⭐"
-            {...register("icon")}
-          />
-        </div>
+        <Input
+          id="icon"
+          maxLength={2}
+          placeholder="🎯"
+          {...register("icon")}
+        />
       </div>
 
       {/* Footer */}
@@ -185,4 +281,4 @@ function HabitForm({
   );
 }
 
-export default HabitForm;
+export default GoalForm;

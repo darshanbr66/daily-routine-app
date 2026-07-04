@@ -45,18 +45,22 @@ function TaskDialog({
       open={open}
       onOpenChange={onOpenChange}
     >
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>
-            {task ? "Edit Task" : "Create New Task"}
+            {task
+              ? "Edit Task"
+              : "Create New Task"}
           </DialogTitle>
         </DialogHeader>
 
         <TaskForm
           defaultValues={{
             title: task?.title || "",
-            description: task?.description || "",
-            priority: task?.priority || "medium",
+            description:
+              task?.description || "",
+            priority:
+              task?.priority || "medium",
             dueDate: task?.dueDate
               ? task.dueDate.split("T")[0]
               : "",
@@ -67,7 +71,9 @@ function TaskDialog({
             updateTaskMutation.isPending
           }
           submitText={
-            task ? "Update Task" : "Create Task"
+            task
+              ? "Update Task"
+              : "Create Task"
           }
         />
       </DialogContent>
