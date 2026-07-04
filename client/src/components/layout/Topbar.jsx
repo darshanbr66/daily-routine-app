@@ -1,15 +1,26 @@
 import MobileSidebar from "./MobileSidebar";
 
-function Topbar({ navigation }) {
+function Topbar() {
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-white px-4 md:hidden">
-      <MobileSidebar navigation={navigation} />
+    <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm md:hidden">
+      {/* Mobile Menu */}
+      <MobileSidebar />
 
-      <h1 className="text-lg font-semibold">
-        Daily Routine
-      </h1>
+      {/* Logo + Brand */}
+      <div className="flex items-center gap-2">
+        <img
+          src="/logo-icon.png"
+          alt="Daily Routine"
+          className="h-9 w-9 object-contain"
+        />
 
-      <div className="w-8" />
+        <span className="text-lg font-bold text-indigo-600">
+          Daily Routine
+        </span>
+      </div>
+
+      {/* Spacer for balanced layout */}
+      <div className="w-10" />
     </header>
   );
 }

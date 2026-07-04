@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -8,6 +7,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+
 import { useLogout } from "@/features/auth/hooks/useLogout";
 
 import { LogOut, User } from "lucide-react";
@@ -16,8 +17,36 @@ import MobileSidebar from "./MobileSidebar";
 
 function Navbar() {
   const { user } = useSelector((state) => state.auth);
-
   const logoutUser = useLogout();
+  const location = useLocation();
+
+  const getPageTitle = () => {
+    switch (location.pathname) {
+      case "/dashboard":
+        return "Dashboard";
+
+      case "/dashboard/tasks":
+        return "Tasks";
+
+      case "/dashboard/habits":
+        return "Habits";
+
+      case "/dashboard/calendar":
+        return "Calendar";
+
+      case "/dashboard/goals":
+        return "Goals";
+
+      case "/dashboard/notes":
+        return "Notes";
+
+      case "/dashboard/settings":
+        return "Settings";
+
+      default:
+        return "Daily Routine";
+    }
+  };
 
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm md:px-6">
@@ -28,8 +57,8 @@ function Navbar() {
           <MobileSidebar />
         </div>
 
-        <h1 className="text-xl font-bold text-slate-800 md:text-2xl">
-          Daily Routine
+        <h1 className="text-2xl font-bold text-slate-800">
+          {getPageTitle()}
         </h1>
       </div>
 

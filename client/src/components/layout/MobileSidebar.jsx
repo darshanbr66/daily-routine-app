@@ -20,12 +20,26 @@ function MobileSidebar() {
 
       <SheetContent side="left" className="w-72 p-0">
         {/* Logo */}
-        <div className="border-b p-6">
+        <div className="border-b px-6 py-5">
           <Link
             to="/dashboard"
-            className="text-2xl font-bold text-indigo-600"
+            className="flex items-center gap-3"
           >
-            Daily Routine
+            <img
+              src="/logo-icon.png"
+              alt="Daily Routine"
+              className="h-11 w-11 object-contain"
+            />
+
+            <div>
+              <h2 className="text-xl font-bold text-indigo-600">
+                Daily Routine
+              </h2>
+
+              <p className="text-xs text-slate-500">
+                Plan • Track • Achieve
+              </p>
+            </div>
           </Link>
         </div>
 
@@ -43,13 +57,15 @@ function MobileSidebar() {
                   `flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-200 ${
                     isActive
                       ? "bg-indigo-600 text-white shadow-md"
-                      : "text-gray-700 hover:bg-gray-100"
+                      : "text-gray-700 hover:bg-gray-100 hover:text-indigo-600"
                   }`
                 }
               >
-                <Icon className="text-lg" />
+                <Icon className="h-5 w-5" />
 
-                <span>{item.name}</span>
+                <span className="font-medium">
+                  {item.name}
+                </span>
               </NavLink>
             );
           })}

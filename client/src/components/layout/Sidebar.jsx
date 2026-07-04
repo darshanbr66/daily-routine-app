@@ -49,12 +49,28 @@ export const navigation = [
 
 function Sidebar() {
   return (
-    <aside className="sticky top-0 hidden h-screen w-64 border-r bg-white shadow-lg md:block">
-      <div className="p-6 text-2xl font-bold text-indigo-600">
-        Daily Routine
+    <aside className="sticky top-0 hidden h-screen w-64 border-r bg-white shadow-lg md:flex md:flex-col">
+      {/* Logo */}
+      <div className="flex items-center gap-3 border-b px-6 py-5">
+        <img
+          src="/logo-icon.png"
+          alt="Daily Routine"
+          className="h-11 w-11 object-contain"
+        />
+
+        <div>
+          <h1 className="text-xl font-bold text-indigo-600">
+            Daily Routine
+          </h1>
+
+          <p className="text-xs text-gray-500">
+            Plan • Track • Achieve
+          </p>
+        </div>
       </div>
 
-      <nav className="mt-6 flex flex-col gap-2 px-3">
+      {/* Navigation */}
+      <nav className="mt-4 flex flex-1 flex-col gap-2 px-3">
         {navigation.map((item) => {
           const Icon = item.icon;
 
@@ -67,13 +83,14 @@ function Sidebar() {
                 `flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-200 ${
                   isActive
                     ? "bg-indigo-600 text-white shadow-md"
-                    : "text-gray-700 hover:bg-gray-100"
+                    : "text-gray-700 hover:bg-gray-100 hover:text-indigo-600"
                 }`
               }
             >
               <Icon className="text-lg" />
-
-              <span>{item.name}</span>
+              <span className="font-medium">
+                {item.name}
+              </span>
             </NavLink>
           );
         })}
