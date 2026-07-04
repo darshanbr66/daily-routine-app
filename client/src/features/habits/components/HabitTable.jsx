@@ -2,36 +2,29 @@ import { CheckSquare, Square } from "lucide-react";
 
 import EmptyState from "@/components/common/EmptyState";
 
-import { useHabits } from "../hooks/useHabits";
 import { useToggleHabit } from "../hooks/useToggleHabit";
-
 import HabitActions from "./HabitActions";
+import HabitSkeleton from "./HabitSkeleton";
 
 function HabitTable({
+  habits = [],
+  isLoading = false,
   search,
   onEdit,
 }) {
-  const { data, isLoading } = useHabits();
-
   const toggleHabitMutation =
     useToggleHabit();
 
   if (isLoading) {
-    return (
-      <div className="rounded-xl border bg-white p-10 text-center">
-        Loading habits...
-      </div>
-    );
+    return <HabitSkeleton />;
   }
-
-  const habits = data?.data || [];
 
   const filteredHabits = habits.filter(
     (habit) =>
       habit.title
         .toLowerCase()
         .includes(search.toLowerCase()) ||
-      habit.description
+      (habit.description || "")
         .toLowerCase()
         .includes(search.toLowerCase())
   );
@@ -79,7 +72,6 @@ function HabitTable({
         <tbody>
           {filteredHabits.map((habit) => {
             const today = new Date();
-
             today.setHours(0, 0, 0, 0);
 
             const completedToday =
@@ -117,13 +109,9 @@ function HabitTable({
                     className="text-green-600 hover:text-green-700"
                   >
                     {completedToday ? (
-                      <CheckSquare
-                        size={22}
-                      />
+                      <CheckSquare size={22} />
                     ) : (
-                      <Square
-                        size={22}
-                      />
+                      <Square size={22} />
                     )}
                   </button>
                 </td>
