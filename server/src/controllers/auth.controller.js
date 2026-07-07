@@ -48,7 +48,49 @@ const login = async (req, res) => {
   }
 };
 
+// Forgot Password
+const forgotPassword = async (req, res) => {
+  try {
+    const result = await authService.forgotPassword(
+      req.body.email
+    );
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message:
+        error.message ||
+        "Unable to process forgot password request.",
+    });
+  }
+};
+
+// Reset Password
+const resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const result = await authService.resetPassword(
+      token,
+      password
+    );
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message:
+        error.message ||
+        "Unable to reset password.",
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
+  forgotPassword,
+  resetPassword,
 };

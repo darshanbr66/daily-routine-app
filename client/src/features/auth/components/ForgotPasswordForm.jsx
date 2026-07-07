@@ -5,39 +5,38 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-import { loginSchema } from "../schemas/auth.schema";
-import { useLogin } from "../hooks/useLogin";
-import PasswordInput from "./PasswordInput";
+import { forgotPasswordSchema } from "../schemas/auth.schema";
+import { useForgotPassword } from "../hooks/useForgotPassword";
+
 import LoadingButton from "./LoadingButton";
 
-function LoginForm() {
+function ForgotPasswordForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
-  const loginMutation = useLogin();
+  const forgotPasswordMutation = useForgotPassword();
 
   const onSubmit = (data) => {
-    loginMutation.mutate(data);
+    forgotPasswordMutation.mutate(data.email);
   };
 
   return (
     <Card className="border-0 shadow-2xl">
       <CardHeader className="space-y-2 pb-4">
         <CardTitle className="text-2xl font-bold sm:text-3xl">
-          Welcome Back
+          Forgot Password
         </CardTitle>
 
         <p className="text-sm text-slate-500">
-          Sign in to continue to your workspace.
+          Enter your email address and we'll send you a password reset link.
         </p>
       </CardHeader>
 
@@ -46,7 +45,6 @@ function LoginForm() {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-5"
         >
-          {/* Email */}
           <div>
             <label className="mb-2 block text-sm font-medium">
               Email
@@ -66,38 +64,21 @@ function LoginForm() {
             )}
           </div>
 
-          {/* Password */}
-          <PasswordInput
-            label="Password"
-            placeholder="Enter your password"
-            registration={register("password")}
-            error={errors.password}
-          />
-
-          <div className="flex justify-end">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-slate-500 transition hover:text-slate-900"
-            >
-              Forgot Password?
-            </Link>
-          </div>
-
           <LoadingButton
             type="submit"
-            isLoading={loginMutation.isPending}
-            loadingText="Signing In..."
+            isLoading={forgotPasswordMutation.isPending}
+            loadingText="Sending..."
           >
-            Login
+            Send Reset Link
           </LoadingButton>
 
           <p className="text-center text-sm text-slate-500">
-            Don't have an account?{" "}
+            Remember your password?{" "}
             <Link
-              to="/register"
+              to="/login"
               className="font-semibold text-slate-900 transition hover:text-indigo-600"
             >
-              Register
+              Back to Login
             </Link>
           </p>
         </form>
@@ -106,4 +87,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default ForgotPasswordForm;

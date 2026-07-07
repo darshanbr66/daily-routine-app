@@ -14,6 +14,8 @@ import GoalsPage from "@/features/goals/pages/GoalsPage";
 import NotesPage from "@/features/notes/pages/NotesPage";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
 import RegisterPage from "@/features/auth/pages/RegisterPage";
+import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
+import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,14 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: "/reset-password/:token",
+    element: <ResetPasswordPage />,
   },
   {
     path: "/dashboard",

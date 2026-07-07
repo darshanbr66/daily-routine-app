@@ -1,26 +1,36 @@
-import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
+import { registerSchema } from "../schemas/auth.schema";
 import { useRegister } from "../hooks/useRegister";
+
+import PasswordInput from "./PasswordInput";
+import LoadingButton from "./LoadingButton";
 
 function RegisterForm() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
   const registerMutation = useRegister();
 
-  const password = watch("password");
-
   const onSubmit = (data) => {
-    const { confirmPassword, ...userData } = data;
+    const { confirmPassword: _confirmPassword, ...userData } = data;
     registerMutation.mutate(userData);
   };
 
@@ -50,9 +60,7 @@ function RegisterForm() {
             <Input
               className="h-11"
               placeholder="Enter your first name"
-              {...register("firstName", {
-                required: "First name is required",
-              })}
+              {...register("firstName")}
             />
 
             {errors.firstName && (
@@ -71,9 +79,7 @@ function RegisterForm() {
             <Input
               className="h-11"
               placeholder="Enter your last name"
-              {...register("lastName", {
-                required: "Last name is required",
-              })}
+              {...register("lastName")}
             />
 
             {errors.lastName && (
@@ -93,9 +99,7 @@ function RegisterForm() {
               type="email"
               className="h-11"
               placeholder="Enter your email"
-              {...register("email", {
-                required: "Email is required",
-              })}
+              {...register("email")}
             />
 
             {errors.email && (
@@ -106,64 +110,28 @@ function RegisterForm() {
           </div>
 
           {/* Password */}
-          <div>
-            <label className="mb-2 block text-sm font-medium">
-              Password
-            </label>
-
-            <Input
-              type="password"
-              className="h-11"
-              placeholder="Create a password"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-              })}
-            />
-
-            {errors.password && (
-              <p className="mt-2 text-sm text-red-500">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
+          <PasswordInput
+            label="Password"
+            placeholder="Create a password"
+            registration={register("password")}
+            error={errors.password}
+          />
 
           {/* Confirm Password */}
-          <div>
-            <label className="mb-2 block text-sm font-medium">
-              Confirm Password
-            </label>
+          <PasswordInput
+            label="Confirm Password"
+            placeholder="Confirm your password"
+            registration={register("confirmPassword")}
+            error={errors.confirmPassword}
+          />
 
-            <Input
-              type="password"
-              className="h-11"
-              placeholder="Confirm your password"
-              {...register("confirmPassword", {
-                required: "Confirm your password",
-                validate: (value) =>
-                  value === password || "Passwords do not match",
-              })}
-            />
-
-            {errors.confirmPassword && (
-              <p className="mt-2 text-sm text-red-500">
-                {errors.confirmPassword.message}
-              </p>
-            )}
-          </div>
-
-          <Button
+          <LoadingButton
             type="submit"
-            className="h-11 w-full"
-            disabled={registerMutation.isPending}
+            isLoading={registerMutation.isPending}
+            loadingText="Creating Account..."
           >
-            {registerMutation.isPending
-              ? "Creating Account..."
-              : "Create Account"}
-          </Button>
+            Create Account
+          </LoadingButton>
 
           <p className="text-center text-sm text-slate-500">
             Already have an account?{" "}
