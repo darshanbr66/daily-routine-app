@@ -13,6 +13,7 @@ import CalendarPage from "@/features/calendar/pages/CalendarPage";
 import GoalsPage from "@/features/goals/pages/GoalsPage";
 import NotesPage from "@/features/notes/pages/NotesPage";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
+import RegisterPage from "@/features/auth/pages/RegisterPage";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
   },
   {
     path: "/dashboard",
