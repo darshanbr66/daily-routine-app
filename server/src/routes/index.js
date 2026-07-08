@@ -9,6 +9,7 @@ const dashboardRoutes = require("./dashboard.routes");
 const habitRoutes = require("./habit.routes");
 const goalRoutes = require("./goal.routes");
 const eventRoutes = require("./event.routes");
+const noteRoutes = require("./note.routes");
 
 // Health Check
 router.get("/health", (req, res) => {
@@ -26,5 +27,6 @@ router.use("/dashboard", dashboardRoutes);
 router.use("/habits", habitRoutes);
 router.use("/goals", goalRoutes);
 router.use("/events", eventRoutes);
+router.use("/notes", noteRoutes);
 
 module.exports = router;
