@@ -17,7 +17,9 @@ import MobileSidebar from "./MobileSidebar";
 
 function Navbar() {
   const { user } = useSelector((state) => state.auth);
+
   const logoutUser = useLogout();
+
   const location = useLocation();
 
   const getPageTitle = () => {
@@ -54,8 +56,10 @@ function Navbar() {
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm md:px-6">
       {/* Left */}
+
       <div className="flex items-center gap-3">
         {/* Mobile Menu */}
+
         <div className="md:hidden">
           <MobileSidebar />
         </div>
@@ -66,8 +70,8 @@ function Navbar() {
       </div>
 
       {/* Right */}
+
       <div className="flex items-center gap-4">
-        {/* User Info */}
         <div className="hidden text-right md:block">
           <p className="font-semibold text-slate-800">
             {user?.firstName} {user?.lastName}
@@ -78,7 +82,6 @@ function Navbar() {
           </p>
         </div>
 
-        {/* Avatar */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="outline-none">

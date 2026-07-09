@@ -10,6 +10,13 @@ import {
   FaSyncAlt,
 } from "react-icons/fa";
 
+import {
+  PanelLeftClose,
+  PanelLeftOpen,
+} from "lucide-react";
+
+import { useSidebar } from "@/context/SidebarContext";
+
 export const navigation = [
   {
     name: "Dashboard",
@@ -54,26 +61,63 @@ export const navigation = [
 ];
 
 function Sidebar() {
+  const { collapsed, toggleSidebar } =
+    useSidebar();
+
   return (
-    <aside className="sticky top-0 hidden h-screen w-64 border-r bg-white shadow-lg md:flex md:flex-col">
-      {/* Logo */}
+    <aside
+      className={`sticky top-0 hidden h-screen flex-shrink-0 overflow-hidden border-r bg-white shadow-lg transition-all duration-300 ease-in-out md:flex md:flex-col ${
+        collapsed ? "w-20" : "w-64"
+      }`}
+    >
+      {/* Header */}
 
-      <div className="flex items-center gap-3 border-b px-6 py-5">
-        <img
-          src="/logo-icon.png"
-          alt="Daily Routine"
-          className="h-11 w-11 object-contain"
-        />
+      <div className="border-b">
+        {!collapsed ? (
+          <div className="flex items-center justify-between px-5 py-5">
+            <div className="flex items-center gap-3 overflow-hidden">
+              <img
+                src="/logo-icon.png"
+                alt="Daily Routine"
+                className="h-11 w-11 shrink-0 object-contain"
+              />
 
-        <div>
-          <h1 className="text-xl font-bold text-indigo-600">
-            Daily Routine
-          </h1>
+              <div className="overflow-hidden whitespace-nowrap transition-all duration-300">
+                <h1 className="text-lg font-bold text-indigo-600">
+                  Daily Routine
+                </h1>
 
-          <p className="text-xs text-gray-500">
-            Plan • Track • Achieve
-          </p>
-        </div>
+                <p className="text-xs text-gray-500">
+                  Plan • Track • Achieve
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={toggleSidebar}
+              title="Collapse Sidebar"
+              className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-indigo-600"
+            >
+              <PanelLeftClose className="h-5 w-5" />
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center gap-3 py-5">
+            <img
+              src="/logo-icon.png"
+              alt="Daily Routine"
+              className="h-9 w-9 object-contain"
+            />
+
+            <button
+              onClick={toggleSidebar}
+              title="Expand Sidebar"
+              className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-indigo-600"
+            >
+              <PanelLeftOpen className="h-5 w-5" />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Navigation */}
@@ -87,17 +131,28 @@ function Sidebar() {
               key={item.name}
               to={item.path}
               end={item.path === "/dashboard"}
+              title={collapsed ? item.name : ""}
               className={({ isActive }) =>
-                `flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-200 ${
+                `flex items-center rounded-lg transition-all duration-300 ${
+                  collapsed
+                    ? "justify-center px-3 py-3"
+                    : "px-4 py-3"
+                } ${
                   isActive
                     ? "bg-indigo-600 text-white shadow-md"
                     : "text-gray-700 hover:bg-gray-100 hover:text-indigo-600"
                 }`
               }
             >
-              <Icon className="text-lg" />
+              <Icon className="h-5 w-5 shrink-0" />
 
-              <span className="font-medium">
+              <span
+                className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${
+                  collapsed
+                    ? "ml-0 w-0 opacity-0"
+                    : "ml-3 w-auto opacity-100"
+                }`}
+              >
                 {item.name}
               </span>
             </NavLink>
