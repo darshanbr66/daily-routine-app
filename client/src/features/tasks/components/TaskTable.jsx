@@ -83,95 +83,97 @@ function TaskTable({
 
   return (
     <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
-      <table className="w-full">
-        <thead className="bg-slate-100">
-          <tr>
-            <th className="px-6 py-4 text-left">
-              Title
-            </th>
+      <div className="overflow-x-auto">
+        <table className="min-w-[700px] w-full">
+          <thead className="bg-slate-100">
+            <tr>
+              <th className="px-6 py-4 text-left">
+                Title
+              </th>
 
-            <th className="px-6 py-4 text-left">
-              Priority
-            </th>
+              <th className="px-6 py-4 text-left">
+                Priority
+              </th>
 
-            <th className="px-6 py-4 text-left">
-              Status
-            </th>
+              <th className="px-6 py-4 text-left">
+                Status
+              </th>
 
-            <th className="px-6 py-4 text-left">
-              Due Date
-            </th>
+              <th className="px-6 py-4 text-left">
+                Due Date
+              </th>
 
-            <th className="px-6 py-4 text-center">
-              Actions
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {tasks.map((task) => (
-            <tr
-              key={task._id}
-              className="border-t hover:bg-slate-50"
-            >
-              <td className="px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() =>
-                      toggleTaskStatus(task)
-                    }
-                    className="text-green-600 hover:text-green-700"
-                    title="Toggle Complete"
-                  >
-                    {task.status ===
-                    "completed" ? (
-                      <CheckSquare size={22} />
-                    ) : (
-                      <Square size={22} />
-                    )}
-                  </button>
-
-                  <span
-                    className={
-                      task.status ===
-                      "completed"
-                        ? "font-medium text-slate-500 line-through"
-                        : "font-medium"
-                    }
-                  >
-                    {task.title}
-                  </span>
-                </div>
-              </td>
-
-              <td className="px-6 py-4">
-                <TaskPriorityBadge
-                  priority={task.priority}
-                />
-              </td>
-
-              <td className="px-6 py-4">
-                <TaskStatusBadge
-                  status={task.status}
-                />
-              </td>
-
-              <td className="px-6 py-4">
-                <DueDateBadge
-                  dueDate={task.dueDate}
-                />
-              </td>
-
-              <td className="px-6 py-4">
-                <TaskActions
-                  task={task}
-                  onEdit={onEdit}
-                />
-              </td>
+              <th className="px-6 py-4 text-center">
+                Actions
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {tasks.map((task) => (
+              <tr
+                key={task._id}
+                className="border-t hover:bg-slate-50"
+              >
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() =>
+                        toggleTaskStatus(task)
+                      }
+                      className="text-green-600 hover:text-green-700"
+                      title="Toggle Complete"
+                    >
+                      {task.status ===
+                      "completed" ? (
+                        <CheckSquare size={22} />
+                      ) : (
+                        <Square size={22} />
+                      )}
+                    </button>
+
+                    <span
+                      className={
+                        task.status ===
+                        "completed"
+                          ? "font-medium text-slate-500 line-through"
+                          : "font-medium"
+                      }
+                    >
+                      {task.title}
+                    </span>
+                  </div>
+                </td>
+
+                <td className="px-6 py-4">
+                  <TaskPriorityBadge
+                    priority={task.priority}
+                  />
+                </td>
+
+                <td className="px-6 py-4">
+                  <TaskStatusBadge
+                    status={task.status}
+                  />
+                </td>
+
+                <td className="px-6 py-4">
+                  <DueDateBadge
+                    dueDate={task.dueDate}
+                  />
+                </td>
+
+                <td className="px-6 py-4">
+                  <TaskActions
+                    task={task}
+                    onEdit={onEdit}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

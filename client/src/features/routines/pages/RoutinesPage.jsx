@@ -3,24 +3,24 @@ import { useSearchParams } from "react-router-dom";
 
 import { useDebounce } from "@/hooks/useDebounce";
 
-import NotesToolbar from "../components/NotesToolbar";
-import NotesGrid from "../components/NotesGrid";
-import NoteDialog from "../components/NoteDialog";
-import DeleteNoteDialog from "../components/DeleteNoteDialog";
-import NotesSkeleton from "../components/NotesSkeleton";
+import RoutinesToolbar from "../components/RoutinesToolbar";
+import RoutinesGrid from "../components/RoutinesGrid";
+import RoutineDialog from "../components/RoutineDialog";
+import DeleteRoutineDialog from "../components/DeleteRoutineDialog";
+import RoutineSkeleton from "../components/RoutineSkeleton";
 
-import { useNotes } from "../hooks/useNotes";
-import { useCreateNote } from "../hooks/useCreateNote";
-import { useUpdateNote } from "../hooks/useUpdateNote";
+import { useRoutines } from "../hooks/useRoutines";
+import { useCreateRoutine } from "../hooks/useCreateRoutine";
+import { useUpdateRoutine } from "../hooks/useUpdateRoutine";
 
-function NotesPage() {
+function RoutinesPage() {
   const [dialogOpen, setDialogOpen] =
     useState(false);
 
   const [deleteDialogOpen, setDeleteDialogOpen] =
     useState(false);
 
-  const [editingNote, setEditingNote] =
+  const [editingRoutine, setEditingRoutine] =
     useState(null);
 
   const [searchParams, setSearchParams] =
@@ -32,11 +32,11 @@ function NotesPage() {
   const debouncedSearch =
     useDebounce(search, 300);
 
-  const category =
-    searchParams.get("category") || "";
+  const timeOfDay =
+    searchParams.get("timeOfDay") || "";
 
-  const pinnedFilter =
-    searchParams.get("isPinned") || "";
+  const isActive =
+    searchParams.get("isActive") || "";
 
   const updateFilters = (updates) => {
     const params =
@@ -63,41 +63,41 @@ function NotesPage() {
     data,
     isLoading,
     isError,
-  } = useNotes({
+  } = useRoutines({
     search: debouncedSearch,
-    category,
-    isPinned: pinnedFilter,
+    timeOfDay,
+    isActive,
   });
 
-  const createNoteMutation =
-    useCreateNote();
+  const createRoutineMutation =
+    useCreateRoutine();
 
-  const updateNoteMutation =
-    useUpdateNote();
+  const updateRoutineMutation =
+    useUpdateRoutine();
 
-  const notes = data?.data ?? [];
+  const routines = data?.data ?? [];
 
   const resetState = () => {
     setDialogOpen(false);
     setDeleteDialogOpen(false);
-    setEditingNote(null);
+    setEditingRoutine(null);
   };
 
   const handleCreate = () => {
-    setEditingNote(null);
+    setEditingRoutine(null);
     setDialogOpen(true);
   };
 
-  const handleEdit = (note) => {
-    setEditingNote(note);
+  const handleEdit = (routine) => {
+    setEditingRoutine(routine);
     setDialogOpen(true);
   };
 
   const handleSubmit = (formData) => {
-    if (editingNote) {
-      updateNoteMutation.mutate(
+    if (editingRoutine) {
+      updateRoutineMutation.mutate(
         {
-          id: editingNote._id,
+          id: editingRoutine._id,
           data: formData,
         },
         {
@@ -108,19 +108,22 @@ function NotesPage() {
       return;
     }
 
-    createNoteMutation.mutate(formData, {
-      onSuccess: resetState,
-    });
+    createRoutineMutation.mutate(
+      formData,
+      {
+        onSuccess: resetState,
+      }
+    );
   };
 
   if (isLoading && !data) {
-    return <NotesSkeleton />;
+    return <RoutineSkeleton />;
   }
 
   if (isError) {
     return (
       <div className="p-8 text-center text-red-500">
-        Failed to load notes.
+        Failed to load routines.
       </div>
     );
   }
@@ -130,16 +133,16 @@ function NotesPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-4xl font-bold">
-            Notes
+            Routines
           </h1>
 
           <p className="mt-2 text-slate-500">
-            Organize your ideas and
-            important notes.
+            Organize and manage your
+            daily routines.
           </p>
         </div>
 
-        <NotesToolbar
+        <RoutinesToolbar
           search={search}
           onSearchChange={(value) =>
             updateFilters({
@@ -147,63 +150,68 @@ function NotesPage() {
             })
           }
 
-          category={category}
-          onCategoryChange={(value) =>
+          timeOfDay={timeOfDay}
+          onTimeOfDayChange={(value) =>
             updateFilters({
-              category: value,
+              timeOfDay: value,
             })
           }
 
-          pinnedFilter={pinnedFilter}
-          onPinnedFilterChange={(
-            value
-          ) =>
+          isActive={isActive}
+          onIsActiveChange={(value) =>
             updateFilters({
-              isPinned: value,
+              isActive: value,
             })
           }
 
-          onCreateNote={handleCreate}
-          onClearFilters={clearFilters}
+          onCreateRoutine={
+            handleCreate
+          }
+
+          onClearFilters={
+            clearFilters
+          }
         />
 
-        <NotesGrid
-          notes={notes}
-          onNoteClick={handleEdit}
+        <RoutinesGrid
+          routines={routines}
+          onRoutineClick={
+            handleEdit
+          }
         />
       </div>
 
-      <NoteDialog
+      <RoutineDialog
         open={dialogOpen}
         onOpenChange={(open) => {
           setDialogOpen(open);
 
           if (!open) {
-            setEditingNote(null);
+            setEditingRoutine(null);
           }
         }}
-        initialData={editingNote}
+        initialData={editingRoutine}
         onSubmit={handleSubmit}
         onDelete={() => {
           setDialogOpen(false);
           setDeleteDialogOpen(true);
         }}
         isLoading={
-          createNoteMutation.isPending ||
-          updateNoteMutation.isPending
+          createRoutineMutation.isPending ||
+          updateRoutineMutation.isPending
         }
       />
 
-      <DeleteNoteDialog
+      <DeleteRoutineDialog
         open={deleteDialogOpen}
         onOpenChange={
           setDeleteDialogOpen
         }
-        note={editingNote}
+        routine={editingRoutine}
         onDeleted={resetState}
       />
     </>
   );
 }
 
-export default NotesPage;
+export default RoutinesPage;

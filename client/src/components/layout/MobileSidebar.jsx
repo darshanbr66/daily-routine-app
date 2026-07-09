@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { Menu } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
@@ -10,19 +12,29 @@ import {
 import { navigation } from "./Sidebar";
 
 function MobileSidebar() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Sheet>
+    <Sheet
+      open={open}
+      onOpenChange={setOpen}
+    >
       <SheetTrigger asChild>
         <button className="rounded-md p-2 transition hover:bg-slate-100">
           <Menu className="h-6 w-6" />
         </button>
       </SheetTrigger>
 
-      <SheetContent side="left" className="w-72 p-0">
+      <SheetContent
+        side="left"
+        className="w-72 p-0"
+      >
         {/* Logo */}
+
         <div className="border-b px-6 py-5">
           <Link
             to="/dashboard"
+            onClick={() => setOpen(false)}
             className="flex items-center gap-3"
           >
             <img
@@ -44,6 +56,7 @@ function MobileSidebar() {
         </div>
 
         {/* Navigation */}
+
         <nav className="flex flex-col gap-2 p-3">
           {navigation.map((item) => {
             const Icon = item.icon;
@@ -53,7 +66,12 @@ function MobileSidebar() {
                 key={item.name}
                 to={item.path}
                 end={item.path === "/dashboard"}
-                className={({ isActive }) =>
+                onClick={() =>
+                  setOpen(false)
+                }
+                className={({
+                  isActive,
+                }) =>
                   `flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-200 ${
                     isActive
                       ? "bg-indigo-600 text-white shadow-md"

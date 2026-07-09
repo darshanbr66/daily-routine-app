@@ -1,25 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getNotes } from "../api/note.api";
+import { getRoutines } from "../api/routine.api";
 
-export const useNotes = ({
+export const useRoutines = ({
   search = "",
-  category = "",
-  isPinned = "",
+  timeOfDay = "",
+  isActive = "",
 } = {}) => {
   return useQuery({
     queryKey: [
-      "notes",
+      "routines",
       search,
-      category,
-      isPinned,
+      timeOfDay,
+      isActive,
     ],
 
     queryFn: () =>
-      getNotes({
+      getRoutines({
         search,
-        category,
-        isPinned,
+        timeOfDay,
+        isActive,
       }),
 
     staleTime: 1000 * 60 * 5,

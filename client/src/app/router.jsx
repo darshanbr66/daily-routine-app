@@ -16,6 +16,7 @@ import SettingsPage from "@/features/settings/pages/SettingsPage";
 import RegisterPage from "@/features/auth/pages/RegisterPage";
 import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
 import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
+import RoutinesPage from "@/features/routines/pages/RoutinesPage";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
       {
           path: "settings",
           element: <SettingsPage />,
+      },
+      {
+          path: "routines",
+          element: <RoutinesPage />,
       },
     ],
   },

@@ -7,6 +7,7 @@ import {
   FaBullseye,
   FaStickyNote,
   FaCog,
+  FaSyncAlt,
 } from "react-icons/fa";
 
 export const navigation = [
@@ -24,6 +25,11 @@ export const navigation = [
     name: "Habits",
     path: "/dashboard/habits",
     icon: FaCheckCircle,
+  },
+  {
+    name: "Routines",
+    path: "/dashboard/routines",
+    icon: FaSyncAlt,
   },
   {
     name: "Calendar",
@@ -51,6 +57,7 @@ function Sidebar() {
   return (
     <aside className="sticky top-0 hidden h-screen w-64 border-r bg-white shadow-lg md:flex md:flex-col">
       {/* Logo */}
+
       <div className="flex items-center gap-3 border-b px-6 py-5">
         <img
           src="/logo-icon.png"
@@ -70,6 +77,7 @@ function Sidebar() {
       </div>
 
       {/* Navigation */}
+
       <nav className="mt-4 flex flex-1 flex-col gap-2 px-3">
         {navigation.map((item) => {
           const Icon = item.icon;
@@ -88,6 +96,7 @@ function Sidebar() {
               }
             >
               <Icon className="text-lg" />
+
               <span className="font-medium">
                 {item.name}
               </span>

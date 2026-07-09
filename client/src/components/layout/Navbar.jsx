@@ -40,6 +40,9 @@ function Navbar() {
       case "/dashboard/notes":
         return "Notes";
 
+      case "/dashboard/routines":
+        return "Routines";
+
       case "/dashboard/settings":
         return "Settings";
 
