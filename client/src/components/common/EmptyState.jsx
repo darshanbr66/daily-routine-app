@@ -1,35 +1,43 @@
-import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 function EmptyState({
-  icon,
+  icon: Icon,
   title,
   description,
   buttonText,
-  onButtonClick,
+  buttonLink,
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed bg-white py-16 text-center">
-      {icon && (
-        <div className="mb-5 text-slate-400">
-          {icon}
+    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed bg-white px-8 py-16 text-center shadow-sm">
+      {/* Icon */}
+
+      {Icon && (
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100">
+          <Icon className="text-4xl text-slate-500" />
         </div>
       )}
 
-      <h2 className="text-2xl font-semibold">
+      {/* Title */}
+
+      <h2 className="text-2xl font-bold text-slate-900">
         {title}
       </h2>
+
+      {/* Description */}
 
       <p className="mt-3 max-w-md text-slate-500">
         {description}
       </p>
 
-      {buttonText && (
-        <Button
-          className="mt-6"
-          onClick={onButtonClick}
+      {/* Action */}
+
+      {buttonText && buttonLink && (
+        <Link
+          to={buttonLink}
+          className="mt-8 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700"
         >
           {buttonText}
-        </Button>
+        </Link>
       )}
     </div>
   );

@@ -1,21 +1,22 @@
 const dashboardService = require("../services/dashboard.service");
 
-const getSummary = async (req, res) => {
-  try {
-    const summary = await dashboardService.getSummary(req.user.id);
+class DashboardController {
+  async getDashboard(req, res, next) {
+    try {
+      const dashboard =
+        await dashboardService.getDashboard(
+          req.user.id
+        );
 
-    res.status(200).json({
-      success: true,
-      data: summary,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+      return res.status(200).json({
+        success: true,
+        data: dashboard,
+      });
+    } catch (error) {
+      next(error);
+    }
   }
-};
+}
 
-module.exports = {
-  getSummary,
-};
+module.exports =
+  new DashboardController();

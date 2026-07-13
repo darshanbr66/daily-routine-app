@@ -1,32 +1,76 @@
-import DashboardSummary from "../components/DashboardSummary";
-import { useSelector } from "react-redux";
+import DashboardHeader from "../components/DashboardHeader";
+import DashboardSkeleton from "../components/DashboardSkeleton";
+import DueTodayCard from "../components/DueTodayCard";
+import RecentNotes from "../components/RecentNotes";
+import RoutineSummary from "../components/RoutineSummary";
+import StatsGrid from "../components/StatsGrid";
+import GoalProgress from "../components/GoalProgress";
+import QuickActions from "../components/QuickActions";
+import TodayAgenda from "../components/TodayAgenda";
+
+import { useDashboard } from "../hooks/useDashboard";
 
 function DashboardPage() {
-  const { user } = useSelector((state) => state.auth);
+  const {
+    data,
+    isLoading,
+    isError,
+  } = useDashboard();
 
-  const currentHour = new Date().getHours();
+  if (isLoading) {
+    return <DashboardSkeleton />;
+  }
 
-  let greeting = "Good Evening";
+  if (isError) {
+    return (
+      <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
+        <h2 className="text-lg font-semibold text-red-700">
+          Failed to load dashboard.
+        </h2>
 
-  if (currentHour < 12) {
-    greeting = "Good Morning";
-  } else if (currentHour < 18) {
-    greeting = "Good Afternoon";
+        <p className="mt-2 text-red-600">
+          Please try again later.
+        </p>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-4xl font-bold text-slate-800">
-          {greeting}, {user?.firstName} 👋
-        </h1>
+    <div className="space-y-6">
+      {/* Header */}
 
-        <p className="mt-2 text-slate-500">
-          Here's an overview of your productivity today.
-        </p>
+      <DashboardHeader
+        summary={data.summary}
+      />
+
+      <QuickActions />
+
+      {/* Statistics */}
+
+      <StatsGrid
+        stats={data.stats}
+      />
+
+      {/* Dashboard Widgets */}
+
+      <div className="grid gap-6 xl:grid-cols-2">
+
+        <TodayAgenda agenda={data.todayAgenda} />
+        
+        <DueTodayCard
+          tasks={data.dueToday}
+        />
+
+        <RoutineSummary
+          routines={data.routineSummary}
+        />
+
+        <RecentNotes
+          notes={data.recentNotes}
+        />
+
+        <GoalProgress goals={data.goalProgress} />
       </div>
-
-      <DashboardSummary />
     </div>
   );
 }
