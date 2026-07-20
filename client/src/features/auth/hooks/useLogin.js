@@ -4,7 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import { login } from "../api/auth.api";
-import { loginSuccess } from "@/store/authSlice";
+
+import {
+  loginSuccess,
+  setLoading,
+} from "@/store/authSlice";
 
 export const useLogin = () => {
   const dispatch = useDispatch();
@@ -12,6 +16,10 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: login,
+
+    onMutate: () => {
+      dispatch(setLoading(true));
+    },
 
     onSuccess: (data) => {
       dispatch(
@@ -23,13 +31,20 @@ export const useLogin = () => {
 
       toast.success("Login successful");
 
-      navigate("/dashboard");
+      navigate("/dashboard", {
+        replace: true,
+      });
     },
 
     onError: (error) => {
       toast.error(
-        error?.response?.data?.message || "Login failed"
+        error?.response?.data?.message ||
+          "Login failed"
       );
+    },
+
+    onSettled: () => {
+      dispatch(setLoading(false));
     },
   });
 };

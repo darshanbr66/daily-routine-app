@@ -1,15 +1,39 @@
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useSelector(
-    (state) => state.auth
-  );
+import LoadingState from "@/components/common/LoadingState";
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+function ProtectedRoute({ children }) {
+  const {
+    isAuthenticated,
+    initialized,
+  } = useSelector((state) => state.auth);
+
+  /**
+   * Wait until authentication
+   * restoration finishes.
+   */
+  if (!initialized) {
+    return (
+      <LoadingState message="Restoring your session..." />
+    );
   }
 
+  /**
+   * User is not authenticated.
+   */
+  if (!isAuthenticated) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
+  }
+
+  /**
+   * User is authenticated.
+   */
   return children;
 }
 

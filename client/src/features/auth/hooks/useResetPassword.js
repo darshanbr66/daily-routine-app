@@ -1,14 +1,21 @@
 import { useMutation } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import { resetPassword } from "../api/auth.api";
+import { setLoading } from "@/store/authSlice";
 
-export function useResetPassword() {
+export const useResetPassword = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   return useMutation({
     mutationFn: resetPassword,
+
+    onMutate: () => {
+      dispatch(setLoading(true));
+    },
 
     onSuccess: (data) => {
       toast.success(
@@ -16,7 +23,9 @@ export function useResetPassword() {
           "Password reset successful."
       );
 
-      navigate("/login");
+      navigate("/login", {
+        replace: true,
+      });
     },
 
     onError: (error) => {
@@ -25,5 +34,9 @@ export function useResetPassword() {
           "Unable to reset password."
       );
     },
+
+    onSettled: () => {
+      dispatch(setLoading(false));
+    },
   });
-}
+};

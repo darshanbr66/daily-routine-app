@@ -1,11 +1,19 @@
 import { useMutation } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
 import { forgotPassword } from "../api/auth.api";
+import { setLoading } from "@/store/authSlice";
 
-export function useForgotPassword() {
+export const useForgotPassword = () => {
+  const dispatch = useDispatch();
+
   return useMutation({
     mutationFn: forgotPassword,
+
+    onMutate: () => {
+      dispatch(setLoading(true));
+    },
 
     onSuccess: (data) => {
       toast.success(
@@ -20,5 +28,9 @@ export function useForgotPassword() {
           "Unable to process your request. Please try again."
       );
     },
+
+    onSettled: () => {
+      dispatch(setLoading(false));
+    },
   });
-}
+};

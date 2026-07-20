@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 
 /**
  * Generate Access Token
- * Short-lived token used for API authorization.
  */
 const generateAccessToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
@@ -12,7 +11,6 @@ const generateAccessToken = (payload) => {
 
 /**
  * Generate Refresh Token
- * Long-lived token used to issue new access tokens.
  */
 const generateRefreshToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
@@ -40,9 +38,23 @@ const verifyRefreshToken = (token) => {
   );
 };
 
+/**
+ * Get Refresh Token Expiry Date
+ */
+const getRefreshTokenExpiry = () => {
+  const expiresAt = new Date();
+
+  expiresAt.setDate(
+    expiresAt.getDate() + 30
+  );
+
+  return expiresAt;
+};
+
 module.exports = {
   generateAccessToken,
   generateRefreshToken,
   verifyAccessToken,
   verifyRefreshToken,
+  getRefreshTokenExpiry,
 };

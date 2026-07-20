@@ -1,13 +1,22 @@
 const User = require("../models/User");
 
+/**
+ * Find user by email
+ */
 const findByEmail = (email) => {
   return User.findOne({ email });
 };
 
+/**
+ * Create new user
+ */
 const createUser = (userData) => {
   return User.create(userData);
 };
 
+/**
+ * Find user by ID
+ */
 const findById = (id) => {
   return User.findById(id);
 };
@@ -20,7 +29,7 @@ const updateResetPasswordToken = async (
   resetPasswordToken,
   resetPasswordExpires
 ) => {
-  return await User.findByIdAndUpdate(
+  return User.findByIdAndUpdate(
     userId,
     {
       resetPasswordToken,
@@ -38,7 +47,7 @@ const updateResetPasswordToken = async (
 const findByResetPasswordToken = async (
   resetPasswordToken
 ) => {
-  return await User.findOne({
+  return User.findOne({
     resetPasswordToken,
     resetPasswordExpires: {
       $gt: new Date(),
@@ -52,7 +61,7 @@ const findByResetPasswordToken = async (
 const clearResetPasswordToken = async (
   userId
 ) => {
-  return await User.findByIdAndUpdate(
+  return User.findByIdAndUpdate(
     userId,
     {
       resetPasswordToken: null,
@@ -65,68 +74,18 @@ const clearResetPasswordToken = async (
 };
 
 /**
- * Update user password and clear reset token
+ * Update user password
  */
 const updatePassword = async (
   userId,
   hashedPassword
 ) => {
-  return await User.findByIdAndUpdate(
+  return User.findByIdAndUpdate(
     userId,
     {
       password: hashedPassword,
       resetPasswordToken: null,
       resetPasswordExpires: null,
-    },
-    {
-      new: true,
-    }
-  );
-};
-
-/**
- * Save refresh token
- */
-const updateRefreshToken = async (
-  userId,
-  refreshToken,
-  refreshTokenExpires
-) => {
-  return await User.findByIdAndUpdate(
-    userId,
-    {
-      refreshToken,
-      refreshTokenExpires,
-    },
-    {
-      new: true,
-    }
-  );
-};
-
-/**
- * Find user by refresh token
- */
-const findByRefreshToken = async (
-  refreshToken
-) => {
-  return await User.findOne({
-    refreshToken,
-    refreshTokenExpires: {
-      $gt: new Date(),
-    },
-  });
-};
-
-/**
- * Clear refresh token
- */
-const clearRefreshToken = async (userId) => {
-  return await User.findByIdAndUpdate(
-    userId,
-    {
-      refreshToken: null,
-      refreshTokenExpires: null,
     },
     {
       new: true,
@@ -143,8 +102,4 @@ module.exports = {
   findByResetPasswordToken,
   clearResetPasswordToken,
   updatePassword,
-
-  updateRefreshToken,
-  findByRefreshToken,
-  clearRefreshToken,
 };
