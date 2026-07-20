@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema(
       minlength: 8,
     },
 
+    // Password Reset
     resetPasswordToken: {
       type: String,
       default: null,
@@ -38,6 +39,18 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
 
+    // Refresh Token Authentication
+    refreshToken: {
+      type: String,
+      default: null,
+    },
+
+    refreshTokenExpires: {
+      type: Date,
+      default: null,
+    },
+
+    // User Verification
     isEmailVerified: {
       type: Boolean,
       default: false,

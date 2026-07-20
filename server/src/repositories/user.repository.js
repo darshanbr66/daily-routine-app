@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const User = require("../models/User");
 
 const findByEmail = (email) => {
@@ -36,7 +35,9 @@ const updateResetPasswordToken = async (
 /**
  * Find user by reset password token
  */
-const findByResetPasswordToken = async (resetPasswordToken) => {
+const findByResetPasswordToken = async (
+  resetPasswordToken
+) => {
   return await User.findOne({
     resetPasswordToken,
     resetPasswordExpires: {
@@ -48,7 +49,9 @@ const findByResetPasswordToken = async (resetPasswordToken) => {
 /**
  * Clear reset password token
  */
-const clearResetPasswordToken = async (userId) => {
+const clearResetPasswordToken = async (
+  userId
+) => {
   return await User.findByIdAndUpdate(
     userId,
     {
@@ -64,7 +67,10 @@ const clearResetPasswordToken = async (userId) => {
 /**
  * Update user password and clear reset token
  */
-const updatePassword = async (userId, hashedPassword) => {
+const updatePassword = async (
+  userId,
+  hashedPassword
+) => {
   return await User.findByIdAndUpdate(
     userId,
     {
@@ -78,12 +84,67 @@ const updatePassword = async (userId, hashedPassword) => {
   );
 };
 
+/**
+ * Save refresh token
+ */
+const updateRefreshToken = async (
+  userId,
+  refreshToken,
+  refreshTokenExpires
+) => {
+  return await User.findByIdAndUpdate(
+    userId,
+    {
+      refreshToken,
+      refreshTokenExpires,
+    },
+    {
+      new: true,
+    }
+  );
+};
+
+/**
+ * Find user by refresh token
+ */
+const findByRefreshToken = async (
+  refreshToken
+) => {
+  return await User.findOne({
+    refreshToken,
+    refreshTokenExpires: {
+      $gt: new Date(),
+    },
+  });
+};
+
+/**
+ * Clear refresh token
+ */
+const clearRefreshToken = async (userId) => {
+  return await User.findByIdAndUpdate(
+    userId,
+    {
+      refreshToken: null,
+      refreshTokenExpires: null,
+    },
+    {
+      new: true,
+    }
+  );
+};
+
 module.exports = {
   findByEmail,
   createUser,
   findById,
+
   updateResetPasswordToken,
   findByResetPasswordToken,
   clearResetPasswordToken,
   updatePassword,
+
+  updateRefreshToken,
+  findByRefreshToken,
+  clearRefreshToken,
 };
