@@ -18,7 +18,7 @@ import MobileSidebar from "./MobileSidebar";
 function Navbar() {
   const { user } = useSelector((state) => state.auth);
 
-  const logoutUser = useLogout();
+  const logoutMutation = useLogout();
 
   const location = useLocation();
 
@@ -56,10 +56,8 @@ function Navbar() {
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm md:px-6">
       {/* Left */}
-
       <div className="flex items-center gap-3">
         {/* Mobile Menu */}
-
         <div className="md:hidden">
           <MobileSidebar />
         </div>
@@ -70,7 +68,6 @@ function Navbar() {
       </div>
 
       {/* Right */}
-
       <div className="flex items-center gap-4">
         <div className="hidden text-right md:block">
           <p className="font-semibold text-slate-800">
@@ -100,9 +97,14 @@ function Navbar() {
               Profile
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={logoutUser}>
+            <DropdownMenuItem
+              onClick={() => logoutMutation.mutate()}
+              disabled={logoutMutation.isPending}
+            >
               <LogOut className="mr-2 h-4 w-4" />
-              Logout
+              {logoutMutation.isPending
+                ? "Logging out..."
+                : "Logout"}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
